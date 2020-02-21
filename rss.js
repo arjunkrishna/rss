@@ -34,6 +34,7 @@ function getRssFeedForUrl(urlText) {
           var feedUrl = doc.querySelector('link[type="application/rss+xml"]')
             .href;
         } catch (e) {
+          alert(e);
           console.error("Error in parsing the website");
           return;
         }
