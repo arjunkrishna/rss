@@ -40,7 +40,7 @@ function getRssFeed(Url, MaxCount)
     MaxCount : MaxCount,
     ShowDesc : true,
     ShowPubDate:false,
-    DescCharacterLimit:100,
+    DescCharacterLimit:1000,
     TitleLinkTarget:'_blank',    
     });
 }
