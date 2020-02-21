@@ -12,17 +12,20 @@ function getRssFeedForUrl(urlText) {
   var frag = document.createDocumentFragment();
   var hasBegun = true;
   try {
-    var url = new URL(urlText);
+    var url = new URL(urlText);    
   } catch (e) {
     console.error("URL invalid");
     return;
   }
 
-//   let header = new Headers({
-//     'Access-Control-Allow-Origin':'*'   
-// });
-  // fetch(url, { headers: header})
-  fetch(url)
+   var urlText = "https://cors-anywhere.herokuapp.com/"+url.toString();
+
+   alert(urlText);
+  let header = new Headers({
+    'Access-Control-Allow-Origin':'*'   
+});
+  fetch(urlText, { headers: header})
+  //fetch(url)
     .then(res => {
       res.text().then(htmlTxt => {
         /* Extract the RSS Feed URL from the website */
