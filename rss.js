@@ -18,10 +18,11 @@ function getRssFeedForUrl(urlText) {
     return;
   }
 
-  let header = new Headers({
-    'Access-Control-Allow-Origin':'*'   
-});
-  fetch(url, { headers: header})
+//   let header = new Headers({
+//     'Access-Control-Allow-Origin':'*'   
+// });
+  // fetch(url, { headers: header})
+  fetch(url)
     .then(res => {
       res.text().then(htmlTxt => {
         /* Extract the RSS Feed URL from the website */
