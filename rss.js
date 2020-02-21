@@ -7,101 +7,19 @@ var urlParam = function(name, w) {
   return !val ? "" : val[1];
 };
 
-function getRssFeedForUrl(urlText) {
-  const DOMPARSER = new DOMParser().parseFromString.bind(new DOMParser());
-  var frag = document.createDocumentFragment();
-  var hasBegun = true;
-  try {
-    var url = new URL(urlText);    
-  } catch (e) {
-    console.error("URL invalid");
-    return;
-  }
-
-   var urlText = "https://cors-anywhere.herokuapp.com/"+url.toString();
-
-   alert(urlText);
-  let header = new Headers({
-    'Access-Control-Allow-Origin':'*'   
-});
-  fetch(urlText, { headers: header})
-  //fetch(url)
-    .then(res => {
-      res.text().then(htmlTxt => {
-        /* Extract the RSS Feed URL from the website */
-        try {
-          let doc = DOMPARSER(htmlTxt, "text/html");
-          var feedUrl = doc.querySelector('link[type="application/rss+xml"]')
-            .href;
-        } catch (e) {
-          alert(e);
-          console.error("Error in parsing the website");
-          return;
-        }
-        /* Fetch the RSS Feed */
-        fetch(feedUrl)
-          .then(res => {
-            res.text().then(xmlTxt => {
-              /* Parse the RSS Feed and display the content */
-              try {
-                let doc = DOMPARSER(xmlTxt, "text/xml");
-                let heading = document.createElement("h1");
-                heading.textContent = url.hostname;
-                frag.appendChild(heading);
-                doc.querySelectorAll("item").forEach(item => {
-                  let temp = document.importNode(
-                    document.querySelector("template").content,
-                    true
-                  );
-                  let i = item.querySelector.bind(item);
-                  let t = temp.querySelector.bind(temp);
-                  t("h2").textContent = !!i("title")
-                    ? i("title").textContent
-                    : "-";
-                  t("a").textContent = t("a").href = !!i("link")
-                    ? i("link").textContent
-                    : "#";
-                  t("p").innerHTML = !!i("description")
-                    ? i("description").textContent
-                    : "-";
-                  t("h3").textContent = url.hostname;
-                  frag.appendChild(temp);
-                });
-              } catch (e) {
-                console.error("Error in parsing the feed");
-              }
-              if (hasBegun) {
-                document.querySelector("output").textContent = "";
-                hasBegun = false;
-              }
-              document.querySelector("output").appendChild(frag);
-            });
-          })
-          .catch(() => console.error("Error in fetching the RSS feed"));
-      });
-    })
-    .catch(() => console.error("Error in fetching the website"));
-}
-
-function getRssFeedUsingGoogleAjax(FEED_URL)
-{
-  alert(document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent(FEED_URL));
-  $.ajax({
-    url      : document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent(FEED_URL),
-    dataType : 'json',
-    success  : function (data) {
-      if (data.responseData.feed && data.responseData.feed.entries) {
-        $.each(data.responseData.feed.entries, function (i, e) {
-          console.log("------------------------");
-          console.log("title      : " + e.title);
-          console.log("author     : " + e.author);
-          console.log("description: " + e.description);
-        });
-      }
-    }
-  });
+function getRssFeed(Url)
+{  
+  $('#divRss').FeedEk({
+    FeedUrl:Url,
+    MaxCount : 50,
+    ShowDesc : true,
+    ShowPubDate:true,
+    DescCharacterLimit:100,
+    TitleLinkTarget:'_blank',
+    DateFormat: 'MM/dd/yyyy',
+    DateFormatLang:'en'
+    });
 }
 
 var RssFeedUrl = urlParam("RssFeedUrl");
-//getRssFeedForUrl(RssFeedUrl);
-getRssFeedUsingGoogleAjax(RssFeedUrl);
+getRssFeed(RssFeedUrl);
