@@ -85,6 +85,7 @@ function getRssFeedForUrl(urlText) {
 
 function getRssFeedUsingGoogleAjax(FEED_URL)
 {
+  alert(document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent(FEED_URL));
   $.ajax({
     url      : document.location.protocol + '//ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=10&callback=?&q=' + encodeURIComponent(FEED_URL),
     dataType : 'json',
