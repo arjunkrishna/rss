@@ -33,21 +33,29 @@ function empty(data)
   return count == 0;
 }
 
-function getRssFeed(Url, MaxCount)
+function getRssFeed(Url, MaxCount, ContentLimit)
 {  
   $('#divRss').FeedEk({
     FeedUrl:Url,
     MaxCount : MaxCount,
     ShowDesc : true,
     ShowPubDate:false,
-    DescCharacterLimit:1000,
-    TitleLinkTarget:'_blank',    
+    DescCharacterLimit:ContentLimit,
+    TitleLinkTarget:'_blank',        
     });
 }
 
 var RssFeedUrl = urlParam("RssFeedUrl");
 var MaxCount = urlParam("MaxCount");
-if (empty(MaxCount)) {
+var ContentLimit = urlParam("ContentLimit");
+if (empty(MaxCount)) {  
   MaxCount = 5
 }
-getRssFeed(RssFeedUrl, MaxCount);
+if (empty(ContentLimit)) {
+  ContentLimit = 100
+}
+else if (ContentLimit > 1000)
+{
+  ContentLimit = 1000
+}
+getRssFeed(RssFeedUrl, MaxCount, ContentLimit);
